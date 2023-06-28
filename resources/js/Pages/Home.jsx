@@ -1,26 +1,44 @@
 import Navigation from '@/Components/Navigation';
 
 import { Head } from '@inertiajs/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Loading from '@/Components/Loading';
+import Api from '@/lib/Api';
 
-export default class Home extends React.Component {
-    render() {
-        return (
-            <>
-                <Head title="Home" />
-                <Navigation />
+export default function Home() {
 
-                <div className="container mx-auto p-5">
-                    <div className="grid grid-cols-4 gap-4">
-                        <div className="content col-span-3 grid-col-3 rounded bg-gray-100 shadow-lg p-4">
-                            <h2 className="text-xl font-bold mb-6">This is the Home Page.</h2>
-                        </div>
-                        <div className="sidebar rounded bg-gray-100 shadow-lg p-4">
-                            <h2 className="text-xl font-bold mb-6">This is a Side Bar.</h2>
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        Api.getCurrentUser()
+            .then(res => {
+                setUser(res.data)
+            })
+            .catch(e => {
+                alert(e.message ?? "Something went wrong")
+                setUser({})
+            })
+    }, [])
+
+    return (
+        <>
+            <Head title="Home" />
+            <Navigation />
+
+            <div className="container mx-auto p-5">
+                {user ?
+                    <div>
+                        <div className="content rounded bg-gray-100 shadow-lg p-4">
+                            <h1 className="text-xl font-bold mb-6">Welcome to the App!!</h1>
+                            <h4 className="text-xl font-bold mb-6">You're logged in as {user.email}</h4>
                         </div>
                     </div>
-                </div>
-            </>
-        );
-    }
+                    :
+                    <Loading />
+                }
+
+            </div>
+        </>
+    );
+
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,12 @@ Route::get('/list', function () {
     return Inertia::render('List');
 });
 
+Route::get('/user', function(Request $request) {
+    return [
+        'email' => $request->session()->get('user_email')
+    ];
+});
+
 Route::group(['prefix' => 'auth'], function () {
     Route::get('install', [IndexController::class, 'install']);
 
@@ -41,9 +48,7 @@ Route::group(['prefix' => 'auth'], function () {
     });
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::any('/bc-api/{endpoint?}', [IndexController::class, 'proxyToBigCommerce'])->where('endpoint', '(.*)');
 

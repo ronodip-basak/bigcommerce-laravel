@@ -21,6 +21,13 @@ const Api = {
             url: `/bc-api/${resource}`,
         });
     },
+
+    getCurrentUser() {
+        return axios({
+            method: 'get',
+            url: `/user`
+        })
+    }
 };
 
 export default Api;

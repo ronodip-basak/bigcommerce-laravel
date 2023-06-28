@@ -1,3 +1,4 @@
+import Loading from '@/Components/Loading';
 import Navigation from '@/Components/Navigation';
 import Table from '@/Components/Table';
 import Api from '@/lib/Api';
@@ -82,7 +83,7 @@ export default function List() {
                     <h2 className="text-xl font-bold mb-6">List of Products</h2>
                     {
                         loading ?
-                            <h1>Loading...</h1>
+                            <Loading />
                             :
                             <Table tableHeaders={tableHeaders} tableData={products} />
 
